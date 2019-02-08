@@ -14,6 +14,49 @@
 						}
 
 
+			function user_count() {
+
+				$con = mysqli_connect('localhost', 'root', '', 'lr');
+
+				return mysqli_result(mysqli_query($con, "SELECT COUNT(`user_id`) FROM `users` WHERE `active` = 1 "), 0);
+			}
+
+
+		function user_data($user_id) {
+
+			$data = array();
+			$user_id = (int)$user_id;
+
+			$func_num_args = func_num_args();
+			$func_get_args = func_get_args();
+
+			if ($func_num_args > 1) {
+
+				unset($func_get_args[0]);
+
+				$fields = '`' . implode('`, `', $func_get_args) . '`';
+
+				$query = "SELECT $fields FROM `users` WHERE `user_id` = $user_id";
+				$con = mysqli_connect('localhost', 'root', '', 'lr');
+		      	$result = mysqli_query($con, $query);
+
+		      	if ( false===$result ) {
+ 							printf("error: %s\n", mysqli_error($con));
+									}
+
+		      
+		      	
+		      	$data = mysqli_fetch_assoc($result);
+
+				
+				return $data;
+			}
+
+			
+
+		}
+
+
 		function logged_in() {
 			return (isset($_SESSION['user_id'])) ? true: false;
 		}
@@ -24,6 +67,17 @@
 			$username = sanitize($username);
 
 			$query = mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') , "SELECT COUNT(`user_id`) FROM `users` WHERE `username` = '$username' ");
+
+			
+			return (mysqli_result($query, 0, 0) == 1) ? true: false;
+
+		}
+
+		function email_exists($email) {
+
+			$email = sanitize($email);
+
+			$query = mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') , "SELECT COUNT(`user_id`) FROM `users` WHERE `email` = '$email' ");
 
 			
 			return (mysqli_result($query, 0, 0) == 1) ? true: false;

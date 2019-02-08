@@ -1,7 +1,7 @@
 <?php
 
 	include 'core/init.php' ;
-	include 'includes/overall/header.php';
+	
 
   if (empty($_POST) === false ) {
 
@@ -21,12 +21,19 @@
 
 		$errors[] = 'We can\'t find that username. Have you registered?';
 
-	} else if (user_active($username, $password) === false) {
+	} else if (user_active($username) === false) {
 
 
 		$errors[] = 'We haven\'t activated your account!';
 	} else {
          
+         if (strlen($password) > 32) {
+
+		  		$errors[] = 'Password too long';
+
+
+		  	}
+
 		 $login = login($username, $password);
 		 if ($login === false) {
 
@@ -35,19 +42,36 @@
 
 		  else {
 
+		  	
+
 		 	
 		  	
 		 	$_SESSION['user_id'] = $login;
 		 	header('Location: index.php');
-		 	exit();
+		 	$errors[] ="You are logged in";
 		 } 
 	}
 
-	print_r($errors);
+	
 
+	} else {
+		
+		$errors[] = 'No data received.';
 	}
 
 
+	include 'includes/overall/header.php';
+	if(empty($errors) === false) {
+
+		?>
+	
+	<h2>We tried to log you in, but .....</h2>
+	
+
+	<?php
+
+	   echo output_errors($errors);
+	}
 	include 'includes/overall/footer.php';
 
 ?>

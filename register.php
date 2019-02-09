@@ -76,47 +76,94 @@
 
 	} 
 
-	print_r($errors);
 
-
+ 
 
  ?>
 
 <h1>Register</h1>
 
-<form action="" method="post">
+<?php
 
-	<ul>
-		<li>
+	if (isset($_GET['success']) && empty($_GET['success'])) {
 
-			Username*:<br>
-			<input type="text" name="username">
-		</li>
-		<li>
-			Password*:<br>
-			<input type="password" name="password">
-		</li>
-		<li>
-			Password again*:<br>
-			<input type="password" name="password_again">
-		</li>
-		<li>
-			First name*:<br>
-			<input type="text" name="first_name">
-		</li>
-		<li>
-			Last name:<br>
-			<input type="text" name="last_name">
-		</li>
-		<li>
-			Email*:<br>
-			<input type="text" name="email"> 
-		</li>
-		<li>
-			<input type="submit" value="Register">
-		</li>
-	</ul>
+		echo 'You\'ve been registered successfully.';
+	} else {
 
-</form>
 
-<?php include 'includes/overall/footer.php' ; ?>
+				if (empty($_POST) === false && empty($errors) === true) {
+
+					//register user
+
+					$register_data = array(
+
+						'username' 		=> $_POST['username'],
+						'password' 		=> $_POST['password'],
+						'first_name' 	=> $_POST['first_name'],
+						'last_name' 	=> $_POST['last_name'],
+						'email' 		=> $_POST['email']
+						
+					);
+
+						register_user($register_data);
+						//redirect
+						header('Location: register.php?success');
+						exit();
+
+						
+
+				}
+
+				else if (empty($errors) === false) {
+
+					//output errors
+					echo output_errors($errors);
+				}
+
+
+
+ ?>
+
+		<form action="" method="post">
+
+			<ul>
+				<li>
+
+					Username*:<br>
+					<input type="text" name="username">
+				</li>
+				<li>
+					Password*:<br>
+					<input type="password" name="password">
+				</li>
+				<li>
+					Password again*:<br>
+					<input type="password" name="password_again">
+				</li>
+				<li>
+					First name*:<br>
+					<input type="text" name="first_name">
+				</li>
+				<li>
+					Last name:<br>
+					<input type="text" name="last_name">
+				</li>
+				<li>
+					Email*:<br>
+					<input type="text" name="email"> 
+				</li>
+				<li>
+					<input type="submit" value="Register">
+				</li>
+			</ul>
+
+		</form>
+
+<?php 
+
+	}
+
+
+include 'includes/overall/footer.php' ; 
+
+?>

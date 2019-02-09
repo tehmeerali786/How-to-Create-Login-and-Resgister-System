@@ -14,6 +14,28 @@
 						}
 
 
+			function register_user($register_data) {
+
+				array_walk($register_data, 'array_sanitize');
+
+				$register_data['password'] = md5($register_data['password']);
+				
+
+				$fields = '`' . implode('`, `', array_keys($register_data)) . '`';
+				
+				$data = '\'' . implode('\', \'', $register_data) . '\'';
+
+				
+
+				
+				
+
+				mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') ,"INSERT INTO `users` ($fields) VALUES ($data)");
+				
+
+			}
+
+
 			function user_count() {
 
 				$con = mysqli_connect('localhost', 'root', '', 'lr');

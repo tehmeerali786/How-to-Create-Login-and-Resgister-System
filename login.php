@@ -1,6 +1,8 @@
 <?php
 
 	include 'core/init.php' ;
+
+	logged_in_direct() ;
 	
 
   if (empty($_POST) === false ) {

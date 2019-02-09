@@ -1,4 +1,5 @@
 <?php include 'core/init.php' ; ?>
+<?php logged_in_direct(); ?>
 <?php include 'includes/overall/header.php' ; ?>
 
 

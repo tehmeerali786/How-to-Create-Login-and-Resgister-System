@@ -7,8 +7,8 @@ include 'includes/overall/header.php' ;
 
  ?>
 
-<h1>Home</h1>
-<p>Just a template.</p>
+<h1>Contact</h1>
+<p>Contact details.</p>
 
 
 

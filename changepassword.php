@@ -66,40 +66,61 @@ include 'includes/overall/header.php' ;
 
 <?php
 
-	if () {
+	if (isset($_GET['success']) && empty($_GET['success'])) {  
 
-		
+		echo 'Your password has been changed.';
+
+	} else {
+
+			if (empty($_POST) === false && empty($errors) === true) {
+
+				// posted the form and no errors
+
+				change_password($session_user_id, $_POST['password']);
+				header('Location: changepassword.php?success');
+
+				
+			} else if (empty($errors) === false ) {
+
+				//output errors
+				echo output_errors($errors);
+
+			}
+
+		 ?>
+
+		<form action="" method="post">
+
+		<ul>
+			<li>
+				Current password*:<br>
+				<input type="password" name="current_password">
+			</li>
+			<li>
+				New password*:<br>
+				<input type="password" name="password">
+			</li>
+			<li>
+				New password again*:<br>
+				<input type="password" name="password_again">
+			</li>
+			<li>
+				<input type="submit" value="Change password">
+			</li>
+			
+		</ul>
+
+
+
+
+		</form>
+
+
+
+
+<?php 
+
 	}
+include 'includes/overall/footer.php' ; 
 
- ?>
-
-<form action="" method="post">
-
-<ul>
-	<li>
-		Current password*:<br>
-		<input type="text" name="current_password">
-	</li>
-	<li>
-		New password*:<br>
-		<input type="text" name="password">
-	</li>
-	<li>
-		New password again*:<br>
-		<input type="text" name="password_again">
-	</li>
-	<li>
-		<input type="submit" value="Change password">
-	</li>
-	
-</ul>
-
-
-
-
-</form>
-
-
-
-
-<?php include 'includes/overall/footer.php' ; ?>
+?>

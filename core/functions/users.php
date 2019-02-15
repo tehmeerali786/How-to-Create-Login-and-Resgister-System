@@ -13,6 +13,35 @@
 						    return false;
 						}
 
+			function activate($email, $email_code) {
+
+				$email = mysqli_real_escape_string(mysqli_connect('localhost', 'root', '', 'lr'), $email);
+				$email_code = mysqli_real_escape_string(mysqli_connect('localhost', 'root', '', 'lr'), $email_code);
+
+				
+
+				if(mysqli_result(mysqli_query(mysqli_connect('localhost', 'root', '', 'lr'), "SELECT COUNT(`user_id`) FROM `users` WHERE `email` = '$email' AND `email_code` = '$email_code' AND `active` = 0"), 0) == 1) {
+
+					mysqli_query(mysqli_connect('localhost', 'root', '', 'lr'), "UPDATE `users` SET `active` = 1 WHERE `email` = '$email'");
+					return true;
+
+				} else {
+
+					return false;
+				}
+			}
+
+
+			function change_password($user_id, $password) {
+
+				$user_id = (int)$user_id;
+				$password = md5($password);
+
+				mysqli_query(mysqli_connect('localhost', 'root', '', 'lr'), 
+					"UPDATE `users` SET `password` = '$password' WHERE `user_id` = $user_id");
+
+			}
+
 
 			function register_user($register_data) {
 
@@ -31,6 +60,7 @@
 				
 
 				mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') ,"INSERT INTO `users` ($fields) VALUES ($data)");
+				email($register_data['email'], 'Activate your account', "Hello ". $register_data['first_name']. ", \n\nYou need to activate your account, so use link below:\n\nhttp://localhost/lr/activate.php?email=" . $register_data['email'] . "&email_code=" . $register_data['email_code'] . " \n\n link - PHP academy.");
 				
 
 			}

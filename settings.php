@@ -30,7 +30,7 @@ if (empty($_POST) === false) {
 
 			if (empty($errors) === true ) {
 
-				if (filter_var($email, FILTER_VALIDATE_EMAIL) === false ) {
+				if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === false ) {
 
 					$errors[] = 'A valid e-mail address is required.';
 
@@ -43,7 +43,7 @@ if (empty($_POST) === false) {
 			}
 
 
-			print_r($errors);
+			
 
 }
 
@@ -53,34 +53,69 @@ if (empty($_POST) === false) {
 
 <h1>Settings</h1>
 
-<form action="" method="post">
+<?php 
+
+	if (isset($_GET['success']) === true && empty($_GET['success']) === true) {
 
 
-	<ul>
-		<li>
-			First name*:<br>
-			<input type="text" name="first_name" value="<?php echo $user_data['first_name'] ?>">
-		</li>
-		<li>
-			Last name:<br>
-			<input type="text" name="last_name" value="<?php echo $user_data['last_name'] ?>">
-		</li>
-		<li>
-			Email*:<br>
-			<input type="text" name="email" value="<?php echo $user_data['email'] ?>">
-		</li>
-		<li>
-			<input type="submit" value="Update">
-		</li>
-	</ul>
+		echo 'Your details have been updated.' ;
+
+	} else {
+
+				if (empty($_POST) === false && empty($errors) === true) {
+
+					// update user details
+
+					$update_data = array(
+
+						'first_name' 	=> $_POST['first_name'],
+						'last_name' 	=> $_POST['last_name'],
+						'email' 		=> $_POST['email']
+
+					);
+
+					//update_user($update_data);
+					header('Location: settings.php?success');
+					exit();
+
+				} else if  (empty($errors) ===false ) { 
+
+					echo output_errors($errors);
+
+				}
+
+ ?>
+
+				<form action="" method="post">
+
+
+					<ul>
+						<li>
+							First name*:<br>
+							<input type="text" name="first_name" value="<?php echo $user_data['first_name'] ?>">
+						</li>
+						<li>
+							Last name:<br>
+							<input type="text" name="last_name" value="<?php echo $user_data['last_name'] ?>">
+						</li>
+						<li>
+							Email*:<br>
+							<input type="text" name="email" value="<?php echo $user_data['email'] ?>">
+						</li>
+						<li>
+							<input type="submit" value="Update">
+						</li>
+					</ul>
 
 
 
 
-</form>
+				</form>
 
 
 <?php
+
+  }
 include 'includes/overall/footer.php' ; 
 
 ?>

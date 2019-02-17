@@ -74,7 +74,7 @@ if (empty($_POST) === false) {
 
 					);
 
-					//update_user($update_data);
+					update_user($update_data);
 					header('Location: settings.php?success');
 					exit();
 

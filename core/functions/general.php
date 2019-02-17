@@ -63,12 +63,12 @@
 
 	function array_sanitize(&$item) {
 
-		$item = mysqli_real_escape_string(mysqli_connect('localhost', 'root', '', 'lr'), $item);
+		$item = htmlentities(strip_tags(mysqli_real_escape_string(mysqli_connect('localhost', 'root', '', 'lr'), $item)));
 	}
 
 	function sanitize($data) {
 
-		return mysqli_real_escape_string(mysqli_connect('localhost', 'root', '', 'lr'),$data);
+		return htmlentities( strip_tags(mysqli_real_escape_string(mysqli_connect('localhost', 'root', '', 'lr'),$data)));
 
 	}
 

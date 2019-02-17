@@ -14,6 +14,30 @@
 						}
 
 
+			function recover($mode, $email) {
+
+
+					$mode    	= sanitize($mode);
+					$email 		= sanitize($email);
+
+					$user_data = user_data(user_id_from_email($email), 'first_name', 'username');
+
+					if ( $mode == 'username' ) {
+
+						// recover username
+
+						email($email, 'Your username', "Hello " . $user_data['first_name']  . ", \n\nYour username is : " . $user_data['username']  . "\n\n-phpacademy");
+
+					} else if ( $mode == password ) {
+
+						// recover password
+
+					}
+
+
+			}
+ 
+
 
 			function update_user($update_data) {
 
@@ -178,6 +202,14 @@
 
 			$username = sanitize($username);
 			$query = mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') , "SELECT `user_id` FROM `users` WHERE `username` = '$username' ");
+			return mysqli_result($query, 0, 'user_id') ;
+
+		}
+
+		function user_id_from_email($email) {
+
+			$username = sanitize($email);
+			$query = mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') , "SELECT `user_id` FROM `users` WHERE `email` = '$email' ");
 			return mysqli_result($query, 0, 'user_id') ;
 
 		}

@@ -9,7 +9,7 @@ $mail->SMTPSecure = "ssl";
 $mail->Port = 465;
 $mail->SMTPAuth = true;
 $mail->Username = 'freelanceali786@gmail.com';
-$mail->Password = 'YaProtectorYaMerciful786()';
+$mail->Password = '123';
 
 $mail->setFrom('freelanceali786@gmail.com', 'Tehmeer Ali Paryani');
 $mail->addAddress('ali786467@gmail.com');

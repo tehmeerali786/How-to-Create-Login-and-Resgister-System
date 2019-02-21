@@ -14,13 +14,32 @@
 						}
 
 
+			function change_profile_image($user_id, $file_temp, $file_extn) {
+
+				$file_path = 'images/profile/' . substr(md5(time()), 0, 10) . '.' . $file_extn;
+				move_uploaded_file($file_temp, $file_path);
+				mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') , "UPDATE `users` SET `profile` = '" . $file_path  . "' WHERE `user_id` = " . (int)$user_id);
+
+
+			}
+
+
+			function has_access($user_id, $type) {
+
+				$user_id = (int)$user_id;
+				$type = (int)$type;
+				return (mysqli_result(mysqli_query( mysqli_connect('localhost', 'root', '', 'lr'),"SELECT COUNT(`user_id`) FROM `users` WHERE `user_id` = $user_id AND `type` = $type "), 0) == 1) ? true: false;
+
+			}
+
+
 			function recover($mode, $email) {
 
 
 					$mode    	= sanitize($mode);
 					$email 		= sanitize($email);
 
-					$user_data = user_data(user_id_from_email($email), 'first_name', 'username');
+					$user_data = user_data(user_id_from_email($email), 'user_id' ,'first_name', 'username');
 
 					if ( $mode == 'username' ) {
 
@@ -28,9 +47,14 @@
 
 						email($email, 'Your username', "Hello " . $user_data['first_name']  . ", \n\nYour username is : " . $user_data['username']  . "\n\n-phpacademy");
 
-					} else if ( $mode == password ) {
+					} else if ( $mode == 'password' ) {
 
-						// recover password
+						$generated_password = substr(md5(rand(999, 999999)), 0, 8);
+						change_password($user_data['user_id'], $generated_password);
+						update_user($user_data['user_id'], array('password_recover' => '1'));
+						die($generated_password);
+						//email($email, 'Your password recovery', "Hello " . $generated_password  . ", \n\nYour new password is : " . $user_data['username']  . "\n\n-phpacademy");
+						
 
 					}
 
@@ -39,9 +63,9 @@
  
 
 
-			function update_user($update_data) {
+			function update_user($user_id, $update_data) {
 
-				global $session_user_id;
+				
 
 				$update = array();
 
@@ -54,7 +78,7 @@
 
 				}
 
-				mysqli_query( mysqli_connect('localhost', 'root', '', 'lr')  , "UPDATE `users` SET" . implode(', ', $update) . " WHERE `user_id` = $session_user_id") or die(mysqli_error(mysqli_connect('localhost', 'root', '', 'lr'))) ;
+				mysqli_query( mysqli_connect('localhost', 'root', '', 'lr')  , "UPDATE `users` SET" . implode(', ', $update) . " WHERE `user_id` = $user_id") or die(mysqli_error(mysqli_connect('localhost', 'root', '', 'lr'))) ;
 
 				
 				
@@ -86,7 +110,7 @@
 				$password = md5($password);
 
 				mysqli_query(mysqli_connect('localhost', 'root', '', 'lr'), 
-					"UPDATE `users` SET `password` = '$password' WHERE `user_id` = $user_id");
+					"UPDATE `users` SET `password` = '$password', `password_recover` = 0 WHERE `user_id` = $user_id");
 
 			}
 

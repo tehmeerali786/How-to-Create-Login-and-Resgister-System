@@ -70,7 +70,20 @@ include 'includes/overall/header.php' ;
 
 		echo 'Your password has been changed.';
 
-	} else {
+	} 
+
+
+	else {
+
+			if (isset($_GET['force']) && empty($_GET['force'])) {
+
+				?>
+
+				<p>You must change your password now that you requested.</p>
+
+				<?php
+
+			}
 
 			if (empty($_POST) === false && empty($errors) === true) {
 

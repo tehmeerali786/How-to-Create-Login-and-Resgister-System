@@ -13,6 +13,21 @@
 						    return false;
 						}
 
+			function mail_users($subject, $body) {
+
+				$query = mysqli_query( mysqli_connect('localhost', 'root', '', 'lr') , "SELECT `email`, `first_name` FROM `users` WHERE `allow_email` = 1")
+
+				while (($row = mysqli_fetch_assoc($query) !== false ) {
+
+
+				;
+
+					email($row['email'], $subject, "Hello " .  $row['first_name']   . ", \n\n" . $body);
+
+				}
+
+			}
+
 
 			function change_profile_image($user_id, $file_temp, $file_extn) {
 

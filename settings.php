@@ -64,13 +64,16 @@ if (empty($_POST) === false) {
 
 				if (empty($_POST) === false && empty($errors) === true) {
 
+					
+
 					// update user details
 
 					$update_data = array(
 
 						'first_name' 	=> $_POST['first_name'],
 						'last_name' 	=> $_POST['last_name'],
-						'email' 		=> $_POST['email']
+						'email' 		=> $_POST['email'],
+						'allow_email' 	=> ($_POST['allow_email'] == 'on' ) ? 1 : 0
 
 					);
 
@@ -101,6 +104,9 @@ if (empty($_POST) === false) {
 						<li>
 							Email*:<br>
 							<input type="text" name="email" value="<?php echo $user_data['email'] ?>">
+						</li>
+						<li>
+							<input type="checkbox" name="allow_email" <?php if ($user_data['allow_email'] == 1 ) { echo 'checked="checked"' ;} ?>> Would you like email from us?
 						</li>
 						<li>
 							<input type="submit" value="Update">
